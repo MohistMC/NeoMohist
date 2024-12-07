@@ -1,0 +1,13 @@
+--- a/net/minecraft/world/entity/vehicle/MinecartTNT.java
++++ b/net/minecraft/world/entity/vehicle/MinecartTNT.java
+@@ -31,8 +_,8 @@
+     private static final float DEFAULT_EXPLOSION_POWER_BASE = 4.0F;
+     private static final float DEFAULT_EXPLOSION_SPEED_FACTOR = 1.0F;
+     public int fuse = -1;
+-    private float explosionPowerBase = 4.0F;
+-    private float explosionSpeedFactor = 1.0F;
++    public float explosionPowerBase = 4.0F;
++    public float explosionSpeedFactor = 1.0F;
+ 
+     public MinecartTNT(EntityType<? extends MinecartTNT> p_38649_, Level p_38650_) {
+         super(p_38649_, p_38650_);

@@ -251,10 +251,14 @@ public class CraftBlockData implements BlockData {
         return stateString.toString();
     }
 
-    public Map<String, String> toStates() {
+    public Map<String, String> toStates(boolean hideUnspecified) {
+        return (hideUnspecified && parsedStates != null) ? toStates(parsedStates) : toStates(state.getValues());
+    }
+
+    private static Map<String, String> toStates(Map<Property<?>, Comparable<?>> states) {
         Map<String, String> compound = new HashMap<>();
 
-        for (Map.Entry<Property<?>, Comparable<?>> entry : this.state.getValues().entrySet()) {
+        for (Map.Entry<Property<?>, Comparable<?>> entry : states.entrySet()) {
             Property iblockstate = (Property) entry.getKey();
 
             compound.put(iblockstate.getName(), iblockstate.getName(entry.getValue()));
@@ -493,7 +497,6 @@ public class CraftBlockData implements BlockData {
         register(net.minecraft.world.level.block.CaveVinesBlock.class, org.bukkit.craftbukkit.block.impl.CraftCaveVines::new);
         register(net.minecraft.world.level.block.CaveVinesPlantBlock.class, org.bukkit.craftbukkit.block.impl.CraftCaveVinesPlant::new);
         register(net.minecraft.world.level.block.CeilingHangingSignBlock.class, org.bukkit.craftbukkit.block.impl.CraftCeilingHangingSign::new);
-        register(net.minecraft.world.level.block.CherryLeavesBlock.class, org.bukkit.craftbukkit.block.impl.CraftCherryLeaves::new);
         register(net.minecraft.world.level.block.ChiseledBookShelfBlock.class, org.bukkit.craftbukkit.block.impl.CraftChiseledBookShelf::new);
         register(net.minecraft.world.level.block.CopperBulbBlock.class, org.bukkit.craftbukkit.block.impl.CraftCopperBulb::new);
         register(net.minecraft.world.level.block.CrafterBlock.class, org.bukkit.craftbukkit.block.impl.CraftCrafter::new);
@@ -511,6 +514,8 @@ public class CraftBlockData implements BlockData {
         register(net.minecraft.world.level.block.MangrovePropaguleBlock.class, org.bukkit.craftbukkit.block.impl.CraftMangrovePropagule::new);
         register(net.minecraft.world.level.block.MangroveRootsBlock.class, org.bukkit.craftbukkit.block.impl.CraftMangroveRoots::new);
         register(net.minecraft.world.level.block.MossyCarpetBlock.class, org.bukkit.craftbukkit.block.impl.CraftMossyCarpet::new);
+        register(net.minecraft.world.level.block.MultifaceBlock.class, org.bukkit.craftbukkit.block.impl.CraftMultiface::new);
+        register(net.minecraft.world.level.block.ParticleLeavesBlock.class, org.bukkit.craftbukkit.block.impl.CraftParticleLeaves::new);
         register(net.minecraft.world.level.block.PiglinWallSkullBlock.class, org.bukkit.craftbukkit.block.impl.CraftPiglinWallSkull::new);
         register(net.minecraft.world.level.block.PinkPetalsBlock.class, org.bukkit.craftbukkit.block.impl.CraftPinkPetals::new);
         register(net.minecraft.world.level.block.PitcherCropBlock.class, org.bukkit.craftbukkit.block.impl.CraftPitcherCrop::new);

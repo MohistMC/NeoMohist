@@ -1,7 +1,10 @@
 --- a/net/minecraft/world/item/crafting/Ingredient.java
 +++ b/net/minecraft/world/item/crafting/Ingredient.java
-@@ -23,16 +_,20 @@
+@@ -21,18 +_,42 @@
+ import net.minecraft.world.item.Items;
+ import net.minecraft.world.item.crafting.display.SlotDisplay;
  import net.minecraft.world.level.ItemLike;
++import org.jetbrains.annotations.Nullable;
  
  public class Ingredient implements StackedContents.IngredientInfo<Holder<Item>>, Predicate<ItemStack> {
 -    public static final StreamCodec<RegistryFriendlyByteBuf, Ingredient> CONTENTS_STREAM_CODEC = ByteBufCodecs.holderSet(Registries.ITEM)
@@ -24,10 +27,29 @@
 +    private net.neoforged.neoforge.common.crafting.ICustomIngredient customIngredient = null;
 +    @org.jetbrains.annotations.Nullable
 +    private List<Holder<Item>> customIngredientValues;
++
++    // CraftBukkit start
++    @Nullable
++    private List<ItemStack> itemStacks;
++
++    public boolean isExact() {
++        return this.itemStacks != null;
++    }
++
++    public List<ItemStack> itemStacks() {
++        return this.itemStacks;
++    }
++
++    public static Ingredient ofStacks(List<ItemStack> stacks) {
++        Ingredient recipe = Ingredient.of(stacks.stream().map(ItemStack::getItem));
++        recipe.itemStacks = stacks;
++        return recipe;
++    }
++    // CraftBukkit end
  
      private Ingredient(HolderSet<Item> p_365027_) {
          p_365027_.unwrap().ifRight(p_360057_ -> {
-@@ -45,30 +_,96 @@
+@@ -45,30 +_,107 @@
          this.values = p_365027_;
      }
  
@@ -59,6 +81,17 @@
 +        if (this.customIngredient != null) {
 +            return this.customIngredient.test(p_43914_);
 +        }
++        // CraftBukkit start
++        if (this.isExact()) {
++            for (ItemStack itemstack1 : this.itemStacks()) {
++                if (itemstack1.getItem() == p_43914_.getItem() && ItemStack.isSameItemSameComponents(p_43914_, itemstack1)) {
++                    return true;
++                }
++            }
++
++            return false;
++        }
++        // CraftBukkit end
          return p_43914_.is(this.values);
      }
  
@@ -72,7 +105,7 @@
      @Override
      public boolean equals(Object p_301003_) {
 -        return p_301003_ instanceof Ingredient ingredient ? Objects.equals(this.values, ingredient.values) : false;
-+        return p_301003_ instanceof Ingredient ingredient ? java.util.Objects.equals(this.customIngredient, ingredient.customIngredient) && Objects.equals(this.values, ingredient.values) : false;
++        return p_301003_ instanceof Ingredient ingredient ? java.util.Objects.equals(this.customIngredient, ingredient.customIngredient) && Objects.equals(this.values, ingredient.values) && Objects.equals(this.itemStacks, ingredient.itemStacks) : false;
 +    }
 +
 +    @Override

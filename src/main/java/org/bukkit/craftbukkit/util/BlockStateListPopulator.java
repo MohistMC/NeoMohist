@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -151,5 +152,11 @@ public class BlockStateListPopulator extends DummyGeneratorAccess {
     @Override
     public long nextSubTickCount() {
         return this.world.nextSubTickCount();
+    }
+
+    // SPIGOT-7966: Needed for some tree generations
+    @Override
+    public RandomSource getRandom() {
+        return world.getRandom();
     }
 }

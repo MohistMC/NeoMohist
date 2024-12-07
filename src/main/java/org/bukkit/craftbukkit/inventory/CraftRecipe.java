@@ -32,14 +32,13 @@ public interface CraftRecipe extends Recipe {
         } else if (bukkit instanceof RecipeChoice.MaterialChoice) {
             stack = Ingredient.of(((RecipeChoice.MaterialChoice) bukkit).getChoices().stream().map((mat) -> CraftItemType.bukkitToMinecraft(mat)));
         } else if (bukkit instanceof RecipeChoice.ExactChoice) {
-            stack = Ingredient.ofStacks(((RecipeChoice.ExactChoice) bukkit).getChoices().stream().map((mat) -> CraftItemStack.asNMSCopy(mat)));
+            stack = Ingredient.ofStacks(((RecipeChoice.ExactChoice) bukkit).getChoices().stream().map((mat) -> CraftItemStack.asNMSCopy(mat)).toList());
         } else {
             throw new IllegalArgumentException("Unknown recipe stack instance " + bukkit);
         }
 
-        List<Holder<Item>> items = stack.items();
         if (requireNotEmpty) {
-            Preconditions.checkArgument(!items.isEmpty(), "Recipe requires at least one non-air choice");
+            Preconditions.checkArgument(!stack.isEmpty(), "Recipe requires at least one non-air choice");
         }
 
         return stack;
@@ -50,9 +49,7 @@ public interface CraftRecipe extends Recipe {
     }
 
     public static RecipeChoice toBukkit(Ingredient list) {
-        List<Holder<Item>> items = list.items();
-
-        if (items.isEmpty()) {
+        if (list.isEmpty()) {
             return null;
         }
 
@@ -64,10 +61,7 @@ public interface CraftRecipe extends Recipe {
 
             return new RecipeChoice.ExactChoice(choices);
         } else {
-            List<org.bukkit.Material> choices = new ArrayList<>(items.size());
-            for (Holder<Item> i : items) {
-                choices.add(CraftItemType.minecraftToBukkit(i.value()));
-            }
+            List<org.bukkit.Material> choices = list.items().map((i) -> CraftItemType.minecraftToBukkit(i.value())).toList();
 
             return new RecipeChoice.MaterialChoice(choices);
         }

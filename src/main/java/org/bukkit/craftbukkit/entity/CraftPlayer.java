@@ -2009,21 +2009,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     }
 
     @Override
-    public int getNoDamageTicks() {
-        if (this.getHandle().spawnInvulnerableTime > 0) {
-            return Math.max(this.getHandle().spawnInvulnerableTime, this.getHandle().invulnerableTime);
-        } else {
-            return this.getHandle().invulnerableTime;
-        }
-    }
-
-    @Override
-    public void setNoDamageTicks(int ticks) {
-        super.setNoDamageTicks(ticks);
-        this.getHandle().spawnInvulnerableTime = ticks; // SPIGOT-5921: Update both for players, like the getter above
-    }
-
-    @Override
     public void setFlySpeed(float value) {
         this.validateSpeed(value);
         ServerPlayer player = this.getHandle();
@@ -2281,7 +2266,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     @Override
     public <T> void spawnParticle(Particle particle, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, T data, boolean force) {
-        ClientboundLevelParticlesPacket packetplayoutworldparticles = new ClientboundLevelParticlesPacket(CraftParticle.createParticleParam(particle, data), force, (float) x, (float) y, (float) z, (float) offsetX, (float) offsetY, (float) offsetZ, (float) extra, count);
+        ClientboundLevelParticlesPacket packetplayoutworldparticles = new ClientboundLevelParticlesPacket(CraftParticle.createParticleParam(particle, data), false, force, (float) x, (float) y, (float) z, (float) offsetX, (float) offsetY, (float) offsetZ, (float) extra, count);
         this.getHandle().connection.send(packetplayoutworldparticles);
     }
 

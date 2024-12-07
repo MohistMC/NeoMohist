@@ -1,14 +1,19 @@
 --- a/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-@@ -53,6 +_,7 @@
+@@ -53,19 +_,25 @@
      public static final int NUM_DATA_VALUES = 4;
      public static final int BURN_TIME_STANDARD = 200;
      public static final int BURN_COOL_SPEED = 2;
 +    private final RecipeType<? extends AbstractCookingRecipe> recipeType;
      protected NonNullList<ItemStack> items = NonNullList.withSize(3, ItemStack.EMPTY);
-     int litTimeRemaining;
+-    int litTimeRemaining;
++    public int litTimeRemaining;
      int litTotalTime;
-@@ -63,9 +_,14 @@
+-    int cookingTimer;
++    public int cookingTimer;
+     public int cookingTotalTime;
+     protected final ContainerData dataAccess = new ContainerData() {
+         @Override
          public int get(int p_58431_) {
              switch (p_58431_) {
                  case 0:

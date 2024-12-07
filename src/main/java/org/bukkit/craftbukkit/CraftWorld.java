@@ -47,6 +47,7 @@ import net.minecraft.server.level.TicketType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.SortedArraySet;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -567,9 +568,9 @@ public class CraftWorld extends CraftRegionAccessor implements World {
         Preconditions.checkArgument(loc != null, "Location cannot be null");
         Preconditions.checkArgument(item != null, "ItemStack cannot be null");
 
-        double xs = (this.world.random.nextFloat() * 0.5F) + 0.25D;
-        double ys = (this.world.random.nextFloat() * 0.5F) + 0.25D;
-        double zs = (this.world.random.nextFloat() * 0.5F) + 0.25D;
+        double xs = Mth.nextDouble(world.random, -0.25D, 0.25D);
+        double ys = Mth.nextDouble(world.random, -0.25D, 0.25D) - ((double) net.minecraft.world.entity.EntityType.ITEM.getHeight() / 2.0D);
+        double zs = Mth.nextDouble(world.random, -0.25D, 0.25D);
         loc = loc.clone().add(xs, ys, zs);
         return this.dropItem(loc, item, function);
     }
@@ -1296,7 +1297,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
 
     @Override
     public int getMaxHeight() {
-        return this.world.getMaxY();
+        return this.world.getMaxY() + 1;
     }
 
     @Override
@@ -1905,14 +1906,14 @@ public class CraftWorld extends CraftRegionAccessor implements World {
 
     @Override
     public <T> void spawnParticle(Particle particle, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, T data, boolean force) {
-        this.getHandle().sendParticles(
+        this.getHandle().sendParticlesSource(
                 null, // Sender
                 CraftParticle.createParticleParam(particle, data), // Particle
+                false, force,
                 x, y, z, // Position
                 count,  // Count
                 offsetX, offsetY, offsetZ, // Random offset
-                extra, // Speed?
-                force
+                extra // Speed?
         );
 
     }

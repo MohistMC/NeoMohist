@@ -38,7 +38,7 @@ public final class CraftUseCooldownComponent implements UseCooldownComponent {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("seconds", this.getCooldownSeconds());
         if (this.getCooldownGroup() != null) {
-            result.put("cooldown-group", this.getCooldownGroup());
+            result.put("cooldown-group", this.getCooldownGroup().toString());
         }
 
         return result;
@@ -54,10 +54,10 @@ public final class CraftUseCooldownComponent implements UseCooldownComponent {
     }
 
     @Override
-    public void setCooldownSeconds(float eatSeconds) {
-        Preconditions.checkArgument(eatSeconds >= 0, "eatSeconds cannot be less than 0");
+    public void setCooldownSeconds(float cooldown) {
+        Preconditions.checkArgument(cooldown >= 0, "cooldown cannot be less than 0");
 
-        this.handle = new UseCooldown(eatSeconds, this.handle.cooldownGroup());
+        this.handle = new UseCooldown(cooldown, this.handle.cooldownGroup());
     }
 
     @Override

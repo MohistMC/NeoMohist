@@ -13,7 +13,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SculkChargeParticleOptions;
 import net.minecraft.core.particles.ShriekParticleOption;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.particles.TargetColorParticleOption;
+import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.core.particles.VibrationParticleOption;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
@@ -189,10 +189,10 @@ public abstract class CraftParticle<D> implements Keyed {
                 }
             };
 
-            BiFunction<NamespacedKey, net.minecraft.core.particles.ParticleType<?>, CraftParticle<?>> targetColorFunction = (name, particle) -> new CraftParticle<>(name, particle, Particle.TargetColor.class) {
+            BiFunction<NamespacedKey, net.minecraft.core.particles.ParticleType<?>, CraftParticle<?>> trailFunction  = (name, particle) -> new CraftParticle<>(name, particle, Particle.Trail.class) {
                 @Override
-                public ParticleOptions createParticleParam(Particle.TargetColor data) {
-                    return new TargetColorParticleOption(CraftLocation.toVec3D(data.getTarget()), data.getColor().asRGB());
+                public ParticleOptions createParticleParam(Particle.Trail  data) {
+                    return new TrailParticleOption(CraftLocation.toVec3D(data.getTarget()), data.getColor().asRGB(), data.getDuration());
                 }
             };
 
@@ -208,7 +208,7 @@ public abstract class CraftParticle<D> implements Keyed {
             add("entity_effect", colorFunction);
             add("dust_pillar", blockDataFunction);
             add("block_crumble", blockDataFunction);
-            add("trail", targetColorFunction);
+            add("trail", trailFunction);
         }
 
         private static void add(String name, BiFunction<NamespacedKey, net.minecraft.core.particles.ParticleType<?>, CraftParticle<?>> function) {
