@@ -2,8 +2,9 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.world.entity.monster.creaking.CreakingTransient;
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.entity.Creaking;
 
-public class CraftCreakingTransient extends CraftCreaking implements org.bukkit.entity.CreakingTransient {
+public class CraftCreakingTransient extends CraftCreaking implements Creaking {
 
     public CraftCreakingTransient(CraftServer server, CreakingTransient entity) {
         super(server, entity);

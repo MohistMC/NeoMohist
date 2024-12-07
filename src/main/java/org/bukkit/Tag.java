@@ -52,7 +52,7 @@ public interface Tag<T extends Keyed> extends Keyed {
     /**
      * @deprecated {@link #WOOL_CARPETS}.
      */
-    @Deprecated
+    @Deprecated(since = "1.19")
     Tag<Material> CARPETS = WOOL_CARPETS;
     /**
      * Vanilla block tag representing all wooden doors.
@@ -213,13 +213,13 @@ public interface Tag<T extends Keyed> extends Keyed {
      */
     Tag<Material> FENCES = Bukkit.getTag(REGISTRY_BLOCKS, NamespacedKey.minecraft("fences"), Material.class);
     /**
-     * Vanilla block tag representing all tall flowers.
-     */
-    Tag<Material> TALL_FLOWERS = Bukkit.getTag(REGISTRY_BLOCKS, NamespacedKey.minecraft("tall_flowers"), Material.class);
-    /**
      * Vanilla block tag representing all flowers.
      */
     Tag<Material> FLOWERS = Bukkit.getTag(REGISTRY_BLOCKS, NamespacedKey.minecraft("flowers"), Material.class);
+    /**
+     * Vanilla block tag representing all blocks which attract bees.
+     */
+    Tag<Material> BEE_ATTRACTIVE = Bukkit.getTag(REGISTRY_BLOCKS, NamespacedKey.minecraft("bee_attractive"), Material.class);
     /**
      * Vanilla block tag representing all piglin repellents.
      */
@@ -828,7 +828,7 @@ public interface Tag<T extends Keyed> extends Keyed {
      *
      * @deprecated use {@link #ITEMS_PIGLIN_FOOD}
      */
-    @Deprecated
+    @Deprecated(since = "1.20.5")
     Tag<Material> PIGLIN_FOOD = ITEMS_PIGLIN_FOOD;
     /**
      * Vanilla item tag representing all fox food.
@@ -839,7 +839,7 @@ public interface Tag<T extends Keyed> extends Keyed {
      *
      * @deprecated use {@link #ITEMS_FOX_FOOD}
      */
-    @Deprecated
+    @Deprecated(since = "1.20.5")
     Tag<Material> FOX_FOOD = ITEMS_FOX_FOOD;
     /**
      * Vanilla item tag representing all cow food.
@@ -1095,10 +1095,6 @@ public interface Tag<T extends Keyed> extends Keyed {
      */
     Tag<Material> ITEMS_TRIM_MATERIALS = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("trim_materials"), Material.class);
     /**
-     * Vanilla item tag representing all trimming templates.
-     */
-    Tag<Material> ITEMS_TRIM_TEMPLATES = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("trim_templates"), Material.class);
-    /**
      * Vanilla item tag representing all decorated pot sherds.
      */
     Tag<Material> ITEMS_DECORATED_POT_SHERDS = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("decorated_pot_sherds"), Material.class);
@@ -1137,7 +1133,7 @@ public interface Tag<T extends Keyed> extends Keyed {
      * this constant now acts as a reference to {@link #ITEMS_BREAKS_DECORATED_POTS} which largely shares
      * the same contents of the old "minecraft:tools" tag.
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated(since = "1.20.6", forRemoval = true)
     Tag<Material> ITEMS_TOOLS = ITEMS_BREAKS_DECORATED_POTS;
     /**
      * Vanilla item tag representing all seeds plantable by villagers.
@@ -1159,6 +1155,26 @@ public interface Tag<T extends Keyed> extends Keyed {
      * Vanilla item tag representing all bundle items.
      */
     Tag<Material> ITEMS_BUNDLES = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("bundles"), Material.class);
+    /**
+     * Vanilla item tag representing all skeleton preferred weapons.
+     */
+    Tag<Material> ITEMS_SKELETON_PREFERRED_WEAPONS = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("skeleton_preferred_weapons"), Material.class);
+    /**
+     * Vanilla item tag representing all drowned preferred weapons.
+     */
+    Tag<Material> ITEMS_DROWNED_PREFERRED_WEAPONS = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("drowned_preferred_weapons"), Material.class);
+    /**
+     * Vanilla item tag representing all piglin preferred weapons.
+     */
+    Tag<Material> ITEMS_PIGLIN_PREFERRED_WEAPONS = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("piglin_preferred_weapons"), Material.class);
+    /**
+     * Vanilla item tag representing all pillager preferred weapons.
+     */
+    Tag<Material> ITEMS_PILLAGER_PREFERRED_WEAPONS = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("pillager_preferred_weapons"), Material.class);
+    /**
+     * Vanilla item tag representing all wither skeleton disliked weapons.
+     */
+    Tag<Material> ITEMS_WITHER_SKELETON_DISLIKED_WEAPONS = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("wither_skeleton_disliked_weapons"), Material.class);
     /**
      * Vanilla item tag representing all enchantable foot armor.
      */
@@ -1235,11 +1251,11 @@ public interface Tag<T extends Keyed> extends Keyed {
      * Vanilla item tag representing all items enchantable with mace enchantments.
      */
     Tag<Material> ITEMS_ENCHANTABLE_MACE = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("enchantable/mace"), Material.class);
-        /**
+    /**
      * Vanilla item tag representing all items which when equipped will hide the entity from maps.
      */
     Tag<Material> ITEMS_MAP_INVISIBILITY_EQUIPMENT = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("map_invisibility_equipment"), Material.class);
-        /**
+    /**
      * Vanilla item tag representing all items which disguise the wearer's gaze from other entities.
      */
     Tag<Material> ITEMS_GAZE_DISGUISE_EQUIPMENT = Bukkit.getTag(REGISTRY_ITEMS, NamespacedKey.minecraft("gaze_disguise_equipment"), Material.class);
@@ -1253,7 +1269,7 @@ public interface Tag<T extends Keyed> extends Keyed {
      *
      * @deprecated use {@link #ITEMS_AXOLOTL_FOOD}
      */
-    @Deprecated
+    @Deprecated(since = "1.20.5")
     Tag<Material> AXOLOTL_TEMPT_ITEMS = ITEMS_AXOLOTL_FOOD;
     /**
      * Vanilla item tag representing all items which are preferred for
@@ -1340,7 +1356,7 @@ public interface Tag<T extends Keyed> extends Keyed {
      * Vanilla tag representing entities which deflect arrows.
      * @deprecated use {@link #ENTITY_TYPES_DEFLECTS_PROJECTILES}
      */
-    @Deprecated
+    @Deprecated(since = "1.20.5")
     Tag<EntityType> ENTITY_TYPES_DEFLECTS_ARROWS = ENTITY_TYPES_DEFLECTS_PROJECTILES;
     /**
      * Vanilla tag representing entities which can turn in boats.

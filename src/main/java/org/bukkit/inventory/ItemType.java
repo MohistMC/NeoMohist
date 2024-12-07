@@ -339,6 +339,8 @@ public interface ItemType extends Keyed, Translatable {
     ItemType.Typed<ItemMeta> RED_WOOL = getItemType("red_wool");
     ItemType.Typed<ItemMeta> BLACK_WOOL = getItemType("black_wool");
     ItemType.Typed<ItemMeta> DANDELION = getItemType("dandelion");
+    ItemType.Typed<ItemMeta> OPEN_EYEBLOSSOM = getItemType("open_eyeblossom");
+    ItemType.Typed<ItemMeta> CLOSED_EYEBLOSSOM = getItemType("closed_eyeblossom");
     ItemType.Typed<ItemMeta> POPPY = getItemType("poppy");
     ItemType.Typed<ItemMeta> BLUE_ORCHID = getItemType("blue_orchid");
     ItemType.Typed<ItemMeta> ALLIUM = getItemType("allium");
@@ -520,6 +522,13 @@ public interface ItemType extends Keyed, Translatable {
     ItemType.Typed<ItemMeta> MELON = getItemType("melon");
     ItemType.Typed<ItemMeta> VINE = getItemType("vine");
     ItemType.Typed<ItemMeta> GLOW_LICHEN = getItemType("glow_lichen");
+    ItemType.Typed<ItemMeta> RESIN_CLUMP = getItemType("resin_clump");
+    ItemType.Typed<ItemMeta> RESIN_BLOCK = getItemType("resin_block");
+    ItemType.Typed<ItemMeta> RESIN_BRICKS = getItemType("resin_bricks");
+    ItemType.Typed<ItemMeta> RESIN_BRICK_STAIRS = getItemType("resin_brick_stairs");
+    ItemType.Typed<ItemMeta> RESIN_BRICK_SLAB = getItemType("resin_brick_slab");
+    ItemType.Typed<ItemMeta> RESIN_BRICK_WALL = getItemType("resin_brick_wall");
+    ItemType.Typed<ItemMeta> CHISELED_RESIN_BRICKS = getItemType("chiseled_resin_bricks");
     ItemType.Typed<ItemMeta> BRICK_STAIRS = getItemType("brick_stairs");
     ItemType.Typed<ItemMeta> STONE_BRICK_STAIRS = getItemType("stone_brick_stairs");
     ItemType.Typed<ItemMeta> MUD_BRICK_STAIRS = getItemType("mud_brick_stairs");
@@ -1935,6 +1944,7 @@ public interface ItemType extends Keyed, Translatable {
      */
     ItemType.Typed<EnchantmentStorageMeta> ENCHANTED_BOOK = getItemType("enchanted_book");
     ItemType.Typed<ItemMeta> NETHER_BRICK = getItemType("nether_brick");
+    ItemType.Typed<ItemMeta> RESIN_BRICK = getItemType("resin_brick");
     ItemType.Typed<ItemMeta> PRISMARINE_SHARD = getItemType("prismarine_shard");
     ItemType.Typed<ItemMeta> PRISMARINE_CRYSTALS = getItemType("prismarine_crystals");
     ItemType.Typed<ItemMeta> RABBIT = getItemType("rabbit");

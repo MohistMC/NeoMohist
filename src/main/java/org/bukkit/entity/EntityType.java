@@ -328,12 +328,7 @@ public enum EntityType implements Keyed, Translatable {
     PALE_OAK_CHEST_BOAT("pale_oak_chest_boat", PaleOakChestBoat.class, -1),
     SPRUCE_BOAT("spruce_boat", SpruceBoat.class, -1),
     SPRUCE_CHEST_BOAT("spruce_chest_boat", SpruceChestBoat.class, -1),
-    @ApiStatus.Experimental
-    @MinecraftExperimental(MinecraftExperimental.Requires.WINTER_DROP)
     CREAKING("creaking", Creaking.class, -1),
-    @ApiStatus.Experimental
-    @MinecraftExperimental(MinecraftExperimental.Requires.WINTER_DROP)
-    CREAKING_TRANSIENT("creaking_transient", CreakingTransient.class, -1),
     /**
      * A fishing line and bobber.
      */

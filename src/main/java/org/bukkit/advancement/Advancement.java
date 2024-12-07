@@ -1,6 +1,7 @@
 package org.bukkit.advancement;
 
 import java.util.Collection;
+import net.minecraft.advancements.AdvancementRequirements;
 import org.bukkit.Keyed;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +19,14 @@ public interface Advancement extends Keyed {
      */
     @NotNull
     Collection<String> getCriteria();
+
+    /**
+     * Returns the requirements for this advancement.
+     *
+     * @return an AdvancementRequirements object.
+     */
+    @NotNull
+    AdvancementRequirements getRequirements();
 
     /**
      * Returns the display information for this advancement.

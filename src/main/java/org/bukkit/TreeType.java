@@ -101,4 +101,12 @@ public enum TreeType {
      * Cherry tree
      */
     CHERRY,
+    /**
+     * Pale oak tree
+     */
+    PALE_OAK,
+    /**
+     * Pale oak tree with a creaking heart
+     */
+    PALE_OAK_CREAKING,
 }

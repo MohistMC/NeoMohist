@@ -87,13 +87,13 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
      *
      * @see Art
      */
-    Registry<Art> ART = new SimpleRegistry<>(Art.class);
+    Registry<Art> ART = Objects.requireNonNull(Bukkit.getRegistry(Art.class), "No registry present for Art. This is a bug.");
     /**
      * Attribute.
      *
      * @see Attribute
      */
-    Registry<Attribute> ATTRIBUTE = new SimpleRegistry<>(Attribute.class);
+    Registry<Attribute> ATTRIBUTE = Objects.requireNonNull(Bukkit.getRegistry(Attribute.class), "No registry present for Attribute. This is a bug.");
     /**
      * Server banner patterns.
      *
@@ -105,7 +105,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
      *
      * @see Biome
      */
-    Registry<Biome> BIOME = new SimpleRegistry<>(Biome.class);
+    Registry<Biome> BIOME = Objects.requireNonNull(Bukkit.getRegistry(Biome.class), "No registry present for Biome. This is a bug.");
     /**
      * Server block types.
      *
@@ -242,7 +242,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
      *
      * @see Sound
      */
-    Registry<Sound> SOUNDS = new SimpleRegistry<>(Sound.class);
+    Registry<Sound> SOUNDS = Objects.requireNonNull(Bukkit.getRegistry(Sound.class), "No registry present for Sound. This is a bug.");
     /**
      * Trim materials.
      *
@@ -323,7 +323,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
      *
      * @see Fluid
      */
-    Registry<Fluid> FLUID = new SimpleRegistry<>(Fluid.class);
+    Registry<Fluid> FLUID = Objects.requireNonNull(Bukkit.getRegistry(Fluid.class), "No registry present for Fluid. This is a bug.");
     /**
      * Frog variants.
      *
