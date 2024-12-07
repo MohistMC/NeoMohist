@@ -1,31 +1,13 @@
 plugins {
-    id 'net.neoforged.gradleutils' version '3.0.0-alpha.13' apply false
+    id 'net.neoforged.gradleutils' version '3.0.0' apply false
     id 'com.diffplug.spotless' version '6.22.0' apply false
-    id 'net.neoforged.licenser' version '0.7.2'
+    id 'net.neoforged.licenser' version '0.7.5'
     id 'neoforge.formatting-conventions'
 }
 
 apply plugin: 'net.neoforged.gradleutils'
 
-ext.isPreReleaseVersion = project.minecraft_version.contains('w') || project.minecraft_version.contains('-')
-
-if (isPreReleaseVersion) {
-    project.version = "${project.neoforge_snapshot_next_stable}.0-alpha.${project.minecraft_version}.${(new Date()).format('yyyyMMdd.HHmmss', TimeZone.getTimeZone('UTC'))}"
-} else {
-    gradleutils.version {
-        minecraftVersion project.minecraft_version
-        versionPrefix = null // Reset version prefix, which is set by prev. line
-        tags {
-            label = 'beta'
-            cleanMarkerLabel = 'stable'
-        }
-        branches {
-            suffixBranch = true
-        }
-    }
-
-    project.version = project.neoforge_version
-}
+project.version = '1.21.4-dev'
 
 // Print version, generally useful to know - also appears on CI
 System.out.println("NeoForge version ${project.version}")
@@ -33,27 +15,27 @@ System.out.println("NeoForge version ${project.version}")
 allprojects {
     version rootProject.version
     group 'net.neoforged'
-    repositories {
-        maven { url = 'https://hub.spigotmc.org/nexus/content/groups/public/' }
-        maven { url = 'https://maven.mohistmc.com/' }
-        maven { url = 'https://maven.izzel.io/releases' }
-        mavenLocal()
-    }
+
+    apply plugin: 'java'
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
         options.compilerArgs << '-Xlint:-dep-ann' << '-Xlint:-removal' << '-Xdiags:verbose'
     }
-}
-
-subprojects {
-    apply plugin: 'java'
 
     java.toolchain.languageVersion.set(JavaLanguageVersion.of(project.java_version))
 }
 
-repositories {
-    mavenCentral()
+// Remove src/ sources from the root project. They are used in the neoforge subproject.
+sourceSets {
+    main {
+        java {
+            srcDirs = []
+        }
+        resources {
+            srcDirs = []
+        }
+    }
 }
 
 // Put licenser here otherwise it tries to license all source sets including decompiled MC sources
