@@ -1,1 +1,0 @@
-Copyright (c) CraftBukkit/NeoForged and contributors

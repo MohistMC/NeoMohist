@@ -140,7 +140,7 @@ public class ActivationRange
     /**
      * Checks for the activation state of all entities in this chunk.
      *
-     * @param chunk
+     * @param entity
      */
     private static void activateEntity(Entity entity)
     {

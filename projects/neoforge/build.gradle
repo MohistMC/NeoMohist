@@ -256,15 +256,6 @@ generateAccessTransformers {
     )
 }
 
-tasks.withType(Javadoc.class).configureEach {
-    options.tags = [
-            'apiNote:a:<em>API Note:</em>',
-            'implSpec:a:<em>Implementation Requirements:</em>',
-            'implNote:a:<em>Implementation Note:</em>'
-    ]
-    options.addStringOption('Xdoclint:all,-missing', '-public')
-}
-
 AdhocComponentWithVariants javaComponent = (AdhocComponentWithVariants) project.components.findByName("java")
 // Ensure the two default variants are not published, since they
 // contain Minecraft classes
@@ -390,6 +381,8 @@ configurations {
 
 processResources {
     inputs.property("version", project.version)
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     final version = project.version
     filesMatching("META-INF/neoforge.mods.toml") {
         expand([
