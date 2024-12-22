@@ -1,0 +1,11 @@
+--- a/net/minecraft/advancements/AdvancementTree.java
++++ b/net/minecraft/advancements/AdvancementTree.java
+@@ -62,7 +_,7 @@
+             }
+         }
+ 
+-        LOGGER.info("Loaded {} advancements", this.nodes.size());
++        // LOGGER.info("Loaded {} advancements", this.nodes.size()); // CraftBukkit - moved to AdvancementDataWorld#reload
+     }
+ 
+     private boolean tryInsert(AdvancementHolder p_301290_) {
