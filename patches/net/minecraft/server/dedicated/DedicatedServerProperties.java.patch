@@ -9,12 +9,7 @@
      public final boolean preventProxyConnections = this.get("prevent-proxy-connections", false);
      public final String serverIp = this.get("server-ip", "");
      public final boolean pvp = this.get("pvp", true);
-@@ -99,10 +_,11 @@
-     public final Settings<DedicatedServerProperties>.MutableValue<Boolean> whiteList = this.getMutable("white-list", false);
-     public final boolean enforceSecureProfile = this.get("enforce-secure-profile", true);
-     public final boolean logIPs = this.get("log-ips", true);
--    public final int pauseWhenEmptySeconds = this.get("pause-when-empty-seconds", 60);
-+    public int pauseWhenEmptySeconds = this.get("pause-when-empty-seconds", 60);
+@@ -103,6 +_,7 @@
      private final DedicatedServerProperties.WorldDimensionData worldDimensionData;
      public final WorldOptions worldOptions;
      public boolean acceptsTransfers = this.get("accepts-transfers", false);

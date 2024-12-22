@@ -26,3 +26,12 @@
                  ProjectileDeflection projectiledeflection = this.hitTargetOrDeflectSelf(entityhitresult);
                  this.hasImpulse = true;
                  if (this.getPierceLevel() > 0 && projectiledeflection == ProjectileDeflection.NONE) {
+@@ -325,7 +_,7 @@
+         this.life = 0;
+     }
+ 
+-    protected boolean isInGround() {
++    public boolean isInGround() {
+         return this.entityData.get(IN_GROUND);
+     }
+ 

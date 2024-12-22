@@ -13,8 +13,8 @@
              this.ticketTracker.update(p_140785_, p_140786_.getTicketLevel(), true);
          }
 +        if (p_140786_.isForceTicks()) {
-+             SortedArraySet<Ticket<?>> tickets = forcedTickets.computeIfAbsent(p_140785_, e -> SortedArraySet.create(4));
-+             tickets.addOrGet(ticket);
++            SortedArraySet<Ticket<?>> tickets = forcedTickets.computeIfAbsent(p_140785_, e -> SortedArraySet.create(4));
++            tickets.addOrGet(ticket);
 +        }
      }
  
@@ -25,10 +25,10 @@
          this.ticketTracker.update(p_140819_, getTicketLevelAt(sortedarrayset), false);
 +
 +        if (p_140820_.isForceTicks()) {
-+             SortedArraySet<Ticket<?>> tickets = forcedTickets.get(p_140819_);
-+             if (tickets != null) {
-+                  tickets.remove(p_140820_);
-+             }
++            SortedArraySet<Ticket<?>> tickets = forcedTickets.get(p_140819_);
++            if (tickets != null) {
++                tickets.remove(p_140820_);
++            }
 +        }
      }
  
@@ -63,8 +63,8 @@
 +    }
 +
 +    public boolean shouldForceTicks(long chunkPos) {
-+         SortedArraySet<Ticket<?>> tickets = forcedTickets.get(chunkPos);
-+         return tickets != null && !tickets.isEmpty();
++        SortedArraySet<Ticket<?>> tickets = forcedTickets.get(chunkPos);
++        return tickets != null && !tickets.isEmpty();
      }
  
      private void dumpTickets(String p_143208_) {

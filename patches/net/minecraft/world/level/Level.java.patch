@@ -64,7 +64,7 @@
 +    public boolean pvpMode;
 +    public boolean keepSpawnInMemory = true;
 +    public static ChunkGenerator generator;
-+    public static Environment environment;
++    public static org.bukkit.World.Environment environment;
 +    public static BiomeProvider biomeProvider;
 +
 +    public boolean preventPoiUpdated = false; // CraftBukkit - SPIGOT-5710
@@ -90,7 +90,7 @@
 +        return Registries.levelToLevelStem(dimension);
 +    }
 +
-+    public static void craftWorldData(ChunkGenerator gen, Environment env, BiomeProvider bp) {
++    public static void craftWorldData(ChunkGenerator gen, org.bukkit.World.Environment env, BiomeProvider bp) {
 +        generator = gen;
 +        environment = env;
 +        biomeProvider = bp;

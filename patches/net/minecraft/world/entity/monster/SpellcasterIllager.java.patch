@@ -1,0 +1,12 @@
+--- a/net/minecraft/world/entity/monster/SpellcasterIllager.java
++++ b/net/minecraft/world/entity/monster/SpellcasterIllager.java
+@@ -174,8 +_,7 @@
+         }
+     }
+ 
+-    public abstract class SpellcasterUseSpellGoal extends Goal {
+-        protected SpellcasterUseSpellGoal() {}
++    protected abstract class SpellcasterUseSpellGoal extends Goal {
+         protected int attackWarmupDelay;
+         protected int nextAttackTickCount;
+ 

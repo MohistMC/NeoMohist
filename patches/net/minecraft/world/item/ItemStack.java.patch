@@ -5,7 +5,7 @@
  import org.slf4j.Logger;
  
 -public final class ItemStack implements DataComponentHolder {
-+public final class ItemStack implements DataComponentHolder, net.neoforged.neoforge.common.extensions.IItemStackExtension, net.neoforged.neoforge.common.MutableDataComponentHolder {
++public final class ItemStack implements DataComponentHolder, net.neoforged.neoforge.common.MutableDataComponentHolder, net.neoforged.neoforge.common.extensions.IItemStackExtension {
      private static final List<Component> OP_NBT_WARNING = List.of(
          Component.translatable("item.op_warning.line1").withStyle(ChatFormatting.RED, ChatFormatting.BOLD),
          Component.translatable("item.op_warning.line2").withStyle(ChatFormatting.RED),
