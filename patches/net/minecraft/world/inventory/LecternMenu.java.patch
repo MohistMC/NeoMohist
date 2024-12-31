@@ -1,0 +1,103 @@
+--- a/net/minecraft/world/inventory/LecternMenu.java
++++ b/net/minecraft/world/inventory/LecternMenu.java
+@@ -2,10 +_,33 @@
+ 
+ import net.minecraft.world.Container;
+ import net.minecraft.world.SimpleContainer;
++import net.minecraft.world.entity.player.Inventory;
+ import net.minecraft.world.entity.player.Player;
+ import net.minecraft.world.item.ItemStack;
++import net.minecraft.world.level.block.entity.LecternBlockEntity.LecternInventory;
++import org.bukkit.Bukkit;
++import org.bukkit.craftbukkit.inventory.CraftInventoryLectern;
++import org.bukkit.craftbukkit.inventory.view.CraftLecternView;
++import org.bukkit.event.player.PlayerTakeLecternBookEvent;
+ 
+ public class LecternMenu extends AbstractContainerMenu {
++
++    // CraftBukkit start
++    private CraftLecternView bukkitEntity = null;
++    private org.bukkit.entity.Player player;
++
++    @Override
++    public CraftLecternView getBukkitView() {
++        if (bukkitEntity != null) {
++            return bukkitEntity;
++        }
++
++        CraftInventoryLectern inventory = new CraftInventoryLectern(this.lectern);
++        bukkitEntity = new CraftLecternView(this.player, inventory, this);
++        return bukkitEntity;
++    }
++    // CraftBukkit end
++
+     private static final int DATA_COUNT = 1;
+     private static final int SLOT_COUNT = 1;
+     public static final int BUTTON_PREV_PAGE = 1;
+@@ -19,6 +_,10 @@
+         this(p_39822_, new SimpleContainer(1), new SimpleContainerData(1));
+     }
+ 
++    public LecternMenu(int p_39822_, Inventory playerinventory) {
++        this(p_39822_, new SimpleContainer(1), new SimpleContainerData(1), playerinventory);
++    }
++
+     public LecternMenu(int p_39824_, Container p_39825_, ContainerData p_39826_) {
+         super(MenuType.LECTERN, p_39824_);
+         checkContainerSize(p_39825_, 1);
+@@ -35,6 +_,29 @@
+         this.addDataSlots(p_39826_);
+     }
+ 
++    // Mohist start
++    public LecternMenu player(Inventory playerinventory) {
++        player = (org.bukkit.entity.Player) playerinventory.player.getBukkitEntity(); // CraftBukkit
++        return this;
++    }
++
++    public LecternMenu(int p_39824_, Container p_39825_, ContainerData p_39826_, Inventory playerinventory) {
++        super(MenuType.LECTERN, p_39824_);
++        checkContainerSize(p_39825_, 1);
++        checkContainerDataCount(p_39826_, 1);
++        this.lectern = p_39825_;
++        this.lecternData = p_39826_;
++        this.addSlot(new Slot(p_39825_, 0, 0, 0) {
++            public void setChanged() {
++                super.setChanged();
++                LecternMenu.this.slotsChanged(this.container);
++            }
++        });
++        this.addDataSlots(p_39826_);
++        player = (org.bukkit.entity.Player) playerinventory.player.getBukkitEntity(); // CraftBukkit
++    }
++    // Mohist end
++
+     @Override
+     public boolean clickMenuButton(Player p_39833_, int p_39834_) {
+         if (p_39834_ >= 100) {
+@@ -56,6 +_,16 @@
+                         return false;
+                     }
+ 
++                    // CraftBukkit start - Event for taking the book
++                    if (player != null) {
++                        PlayerTakeLecternBookEvent event = new PlayerTakeLecternBookEvent(player, ((CraftInventoryLectern) getBukkitView().getTopInventory()).getHolder());
++                        Bukkit.getServer().getPluginManager().callEvent(event);
++                        if (event.isCancelled()) {
++                            return false;
++                        }
++                    }
++                    // CraftBukkit end
++
+                     ItemStack itemstack = this.lectern.removeItemNoUpdate(0);
+                     this.lectern.setChanged();
+                     if (!p_39833_.getInventory().add(itemstack)) {
+@@ -82,6 +_,8 @@
+ 
+     @Override
+     public boolean stillValid(Player p_39831_) {
++        if (lectern instanceof LecternInventory && !((LecternInventory) lectern).getLectern().hasBook()) return false; // CraftBukkit
++        if (!this.checkReachable) return true; // CraftBukkit
+         return this.lectern.stillValid(p_39831_);
+     }
+ 

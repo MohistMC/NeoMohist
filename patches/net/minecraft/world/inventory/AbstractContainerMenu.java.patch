@@ -1,5 +1,57 @@
 --- a/net/minecraft/world/inventory/AbstractContainerMenu.java
 +++ b/net/minecraft/world/inventory/AbstractContainerMenu.java
+@@ -1,5 +_,6 @@
+ package net.minecraft.world.inventory;
+ 
++import com.google.common.base.Preconditions;
+ import com.google.common.base.Suppliers;
+ import com.google.common.collect.HashBasedTable;
+ import com.google.common.collect.Lists;
+@@ -20,6 +_,7 @@
+ import net.minecraft.core.BlockPos;
+ import net.minecraft.core.NonNullList;
+ import net.minecraft.core.registries.BuiltInRegistries;
++import net.minecraft.network.chat.Component;
+ import net.minecraft.server.level.ServerPlayer;
+ import net.minecraft.util.Mth;
+ import net.minecraft.world.Container;
+@@ -33,6 +_,8 @@
+ import net.minecraft.world.level.Level;
+ import net.minecraft.world.level.block.Block;
+ import net.minecraft.world.level.block.entity.BlockEntity;
++import org.bukkit.craftbukkit.inventory.CraftInventory;
++import org.bukkit.inventory.InventoryView;
+ import org.slf4j.Logger;
+ 
+ public abstract class AbstractContainerMenu {
+@@ -66,6 +_,27 @@
+     private ContainerSynchronizer synchronizer;
+     private boolean suppressRemoteUpdates;
+ 
++    // CraftBukkit start
++    public boolean checkReachable = true;
++    public abstract InventoryView getBukkitView();
++    public void transferTo(AbstractContainerMenu other, org.bukkit.craftbukkit.entity.CraftHumanEntity player) {
++        InventoryView source = this.getBukkitView(), destination = other.getBukkitView();
++        ((CraftInventory) source.getTopInventory()).getInventory().onClose(player);
++        ((CraftInventory) source.getBottomInventory()).getInventory().onClose(player);
++        ((CraftInventory) destination.getTopInventory()).getInventory().onOpen(player);
++        ((CraftInventory) destination.getBottomInventory()).getInventory().onOpen(player);
++    }
++    private Component title;
++    public final Component getTitle() {
++        Preconditions.checkState(this.title != null, "Title not set");
++        return this.title;
++    }
++    public final void setTitle(Component title) {
++        Preconditions.checkState(this.title == null, "Title already set");
++        this.title = title;
++    }
++    // CraftBukkit end
++
+     protected AbstractContainerMenu(@Nullable MenuType<?> p_38851_, int p_38852_) {
+         this.menuType = p_38851_;
+         this.containerId = p_38852_;
 @@ -559,6 +_,11 @@
      }
  

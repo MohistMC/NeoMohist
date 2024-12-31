@@ -1,39 +1,31 @@
 --- a/net/minecraft/util/TickThrottler.java
 +++ b/net/minecraft/util/TickThrottler.java
-@@ -1,10 +1,14 @@
+@@ -1,9 +_,11 @@
  package net.minecraft.util;
  
-+// CraftBukkit start
 +import java.util.concurrent.atomic.AtomicInteger;
-+// CraftBukkit end
 +
  public class TickThrottler {
- 
      private final int incrementStep;
      private final int threshold;
 -    private int count;
 +    private final AtomicInteger count = new AtomicInteger(); // CraftBukkit - multithreaded field
  
-     public TickThrottler(int i, int j) {
-         this.incrementStep = i;
-@@ -12,17 +16,32 @@
+     public TickThrottler(int p_374110_, int p_374074_) {
+         this.incrementStep = p_374110_;
+@@ -11,16 +_,24 @@
      }
  
      public void increment() {
--        this.count += this.incrementStep;
+-        this.count = this.count + this.incrementStep;
 +        this.count.addAndGet(this.incrementStep); // CraftBukkit - use thread-safe field access instead
      }
  
      public void tick() {
-+        // CraftBukkit start
+-        if (this.count > 0) {
+-            this.count--;
+-        }
 +        for (int val; (val = this.count.get()) > 0 && !count.compareAndSet(val, val - 1); ) ;
-+        /* Use thread-safe field access instead
-         if (this.count > 0) {
-             --this.count;
-         }
-+        */
-+        // CraftBukkit end
- 
      }
  
      public boolean isUnderThreshold() {

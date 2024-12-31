@@ -1,0 +1,34 @@
+--- a/net/minecraft/world/level/block/entity/LecternBlockEntity.java
++++ b/net/minecraft/world/level/block/entity/LecternBlockEntity.java
+@@ -26,13 +_,17 @@
+ import net.minecraft.world.level.block.state.BlockState;
+ import net.minecraft.world.phys.Vec2;
+ import net.minecraft.world.phys.Vec3;
++import org.bukkit.Location;
++import org.bukkit.craftbukkit.util.CraftLocation;
+ 
+ public class LecternBlockEntity extends BlockEntity implements Clearable, MenuProvider {
+     public static final int DATA_PAGE = 0;
+     public static final int NUM_DATA = 1;
+     public static final int SLOT_BOOK = 0;
+     public static final int NUM_SLOTS = 1;
+-    public final Container bookAccess = new Container() {
++    public final Container bookAccess = new LecternInventory();
++
++    public class LecternInventory implements Container {
+         @Override
+         public int getContainerSize() {
+             return 1;
+@@ -100,6 +_,12 @@
+ 
+         @Override
+         public void clearContent() {
++        }
++
++        @Override
++        public Location getLocation() {
++            if (level == null) return null;
++            return CraftLocation.toBukkit(worldPosition, level.getWorld());
+         }
+     };
+     private final ContainerData dataAccess = new ContainerData() {

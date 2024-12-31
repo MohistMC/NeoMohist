@@ -1,0 +1,67 @@
+--- a/net/minecraft/world/inventory/CraftingMenu.java
++++ b/net/minecraft/world/inventory/CraftingMenu.java
+@@ -15,8 +_,11 @@
+ import net.minecraft.world.item.crafting.CraftingRecipe;
+ import net.minecraft.world.item.crafting.RecipeHolder;
+ import net.minecraft.world.item.crafting.RecipeType;
++import net.minecraft.world.item.crafting.RepairItemRecipe;
+ import net.minecraft.world.level.Level;
+ import net.minecraft.world.level.block.Blocks;
++import org.bukkit.craftbukkit.inventory.CraftInventoryCrafting;
++import org.bukkit.craftbukkit.inventory.CraftInventoryView;
+ 
+ public class CraftingMenu extends AbstractCraftingMenu {
+     private static final int CRAFTING_GRID_WIDTH = 3;
+@@ -32,6 +_,9 @@
+     public final ContainerLevelAccess access;
+     private final Player player;
+     private boolean placingRecipe;
++    // CraftBukkit start
++    private CraftInventoryView bukkitEntity = null;
++    // CraftBukkit end
+ 
+     public CraftingMenu(int p_39353_, Inventory p_39354_) {
+         this(p_39353_, p_39354_, ContainerLevelAccess.NULL);
+@@ -60,6 +_,7 @@
+         Optional<RecipeHolder<CraftingRecipe>> optional = p_379963_.getServer()
+             .getRecipeManager()
+             .getRecipeFor(RecipeType.CRAFTING, craftinginput, p_379963_, p_345124_);
++        p_150550_.setCurrentRecipe(optional.orElse(null)); // CraftBukkit
+         if (optional.isPresent()) {
+             RecipeHolder<CraftingRecipe> recipeholder = optional.get();
+             CraftingRecipe craftingrecipe = recipeholder.value();
+@@ -71,6 +_,8 @@
+             }
+         }
+ 
++        itemstack = org.bukkit.craftbukkit.event.CraftEventFactory.callPreCraftEvent(p_150550_, p_150551_, itemstack, p_150547_.getBukkitView(), optional.map(RecipeHolder::value).orElse(null) instanceof RepairItemRecipe); // CraftBukkit
++
+         p_150551_.setItem(0, itemstack);
+         p_150547_.setRemoteSlot(0, itemstack);
+         serverplayer.connection.send(new ClientboundContainerSetSlotPacket(p_150547_.containerId, p_150547_.incrementStateId(), 0, itemstack));
+@@ -106,6 +_,7 @@
+ 
+     @Override
+     public boolean stillValid(Player p_39368_) {
++        if (!this.checkReachable) return true; // CraftBukkit
+         return stillValid(this.access, p_39368_, Blocks.CRAFTING_TABLE);
+     }
+ 
+@@ -180,4 +_,17 @@
+     protected Player owner() {
+         return this.player;
+     }
++
++    // CraftBukkit start
++    @Override
++    public CraftInventoryView getBukkitView() {
++        if (bukkitEntity != null) {
++            return bukkitEntity;
++        }
++
++        CraftInventoryCrafting inventory = new CraftInventoryCrafting(this.craftSlots, this.resultSlots);
++        bukkitEntity = new CraftInventoryView(this.player.getBukkitEntity(), inventory, this);
++        return bukkitEntity;
++    }
++    // CraftBukkit end
+ }

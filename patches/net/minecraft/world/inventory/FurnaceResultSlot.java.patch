@@ -1,7 +1,10 @@
 --- a/net/minecraft/world/inventory/FurnaceResultSlot.java
 +++ b/net/minecraft/world/inventory/FurnaceResultSlot.java
-@@ -48,6 +_,9 @@
+@@ -46,8 +_,12 @@
+         p_39558_.onCraftedBy(this.player.level(), this.player, this.removeCount);
+         if (this.player instanceof ServerPlayer serverplayer && this.container instanceof AbstractFurnaceBlockEntity abstractfurnaceblockentity) {
              abstractfurnaceblockentity.awardUsedRecipesAndPopExperience(serverplayer);
++            // abstractfurnaceblockentity.awardUsedRecipesAndPopExperience(serverplayer, p_39558_, this.removeCount); // CraftBukkit // Youer TODO
          }
  
 +        if (this.removeCount != 0) {
