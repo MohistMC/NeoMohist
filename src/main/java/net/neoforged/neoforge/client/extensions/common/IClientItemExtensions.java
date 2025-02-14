@@ -7,8 +7,10 @@ package net.neoforged.neoforge.client.extensions.common;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.Consumer;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.player.LocalPlayer;
@@ -128,17 +130,40 @@ public interface IClientItemExtensions {
     }
 
     /**
+     * Called when an armor piece is about to be rendered, allowing parts of the model to be animated or changed.
+     *
+     * @param itemStack       The item stack being worn
+     * @param livingEntity    The entity wearing the armor
+     * @param equipmentSlot   The slot the armor stack is being worn in
+     * @param model           The armor model being rendered
+     * @param limbSwing       The swing position of the entity's walk animation
+     * @param limbSwingAmount The swing speed of the entity's walk animation
+     * @param partialTick     The partial tick time
+     * @param ageInTicks      The total age of the entity, with partialTick already applied
+     * @param netHeadYaw      The yaw (Y rotation) of the entity's head
+     * @param headPitch       The pitch (X rotation) of the entity's head
+     */
+    default void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {}
+
+    /**
+     * @deprecated Switch to {@link IClientItemExtensions#renderHelmetOverlay(ItemStack, Player, GuiGraphics, DeltaTracker)}
+     */
+    @Deprecated(forRemoval = true)
+    default void renderHelmetOverlay(ItemStack stack, Player player, int width, int height, float partialTick) {}
+
+    /**
      * Called when the client starts rendering the HUD, and is wearing this item in the helmet slot.
      * <p>
      * This is where pumpkins would render their overlay.
      *
-     * @param stack       The item stack
-     * @param player      The player entity
-     * @param width       The viewport width
-     * @param height      Viewport height
-     * @param partialTick Partial tick time, useful for interpolation
+     * @param stack        The item stack
+     * @param player       The player entity
+     * @param guiGraphics  The gui graphics
+     * @param deltaTracker The delta tracker
      */
-    default void renderHelmetOverlay(ItemStack stack, Player player, int width, int height, float partialTick) {}
+    default void renderHelmetOverlay(ItemStack stack, Player player, GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+        renderHelmetOverlay(stack, player, guiGraphics.guiWidth(), guiGraphics.guiHeight(), deltaTracker.getGameTimeDeltaPartialTick(true));
+    }
 
     /**
      * Queries this item's renderer.

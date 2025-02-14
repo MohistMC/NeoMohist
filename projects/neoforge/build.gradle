@@ -4,10 +4,10 @@ import net.neoforged.jarcompatibilitychecker.gradle.ProvideNeoForgeJarTask
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.jarcompatibilitychecker' version '0.1.9'
+    id 'net.neoforged.jarcompatibilitychecker' version '0.1.12'
+    id 'net.neoforged.gradleutils'
+    id 'neoforge.versioning'
 }
-
-apply plugin: 'net.neoforged.gradleutils'
 
 gradleutils.setupSigning(project: project, signAllPublications: true)
 
@@ -17,15 +17,13 @@ dynamicProject {
             rootProject.layout.projectDirectory.dir('rejects'))
 }
 
-final checkVersion = JCCPlugin.providePreviousVersion(
-        project.providers, project.providers.provider({['https://maven.neoforged.net/releases']}), project.providers.provider({'net.neoforged:neoforge'})
-)
+
 final createCompatJar = tasks.register('createCompatibilityCheckJar', ProvideNeoForgeJarTask) {
     // Use the same jar that the patches were generated against
     cleanJar.set(tasks.generateClientBinaryPatches.clean)
     maven.set('https://maven.neoforged.net/releases')
     artifact.set('net.neoforged:neoforge')
-    version.set(checkVersion)
+    version.set(project.neoforge_version)
     javaLauncher = javaToolchains.launcherFor {
         languageVersion = JavaLanguageVersion.of(java_version)
     }
@@ -149,6 +147,88 @@ dependencies {
     implementation('com.mohistmc:tools:0.5.1')
     installer 'com.mohistmc:librariesvault:1.20.2'
     installer 'commons-lang:commons-lang:2.6-mohist'
+    compileOnly(jarJar(project(":neoforge-coremods")))
+}
+
+tasks.register('genPatches') {
+    dependsOn(tasks.named('unpackSourcePatches'))
+}
+
+runTypes {
+    client {
+        singleInstance false
+        client true
+
+        arguments.addAll '--fml.neoForgeVersion', project.version
+        arguments.addAll '--fml.fmlVersion', project.fancy_mod_loader_version
+        arguments.addAll '--fml.mcVersion', project.minecraft_version
+        arguments.addAll '--fml.neoFormVersion', project.neoform_version
+    }
+
+    server {
+        server true
+
+        arguments.addAll '--fml.neoForgeVersion', project.version
+        arguments.addAll '--fml.fmlVersion', project.fancy_mod_loader_version
+        arguments.addAll '--fml.mcVersion', project.minecraft_version
+        arguments.addAll '--fml.neoFormVersion', project.neoform_version
+    }
+
+    gameTestServer {
+        from project.runTypes.server
+
+        gameTest true
+    }
+
+    gameTestClient {
+        from project.runTypes.client
+
+        gameTest true
+    }
+
+    data {
+        dataGenerator true
+
+        // Don't set modid here so we can reuse this runType for test datagen
+        arguments.addAll '--fml.neoForgeVersion', project.version
+        arguments.addAll '--fml.fmlVersion', project.fancy_mod_loader_version
+        arguments.addAll '--fml.mcVersion', project.minecraft_version
+        arguments.addAll '--fml.neoFormVersion', project.neoform_version
+    }
+
+    junit {
+        junit true
+        arguments.addAll '--fml.neoForgeVersion', project.version
+        arguments.addAll '--fml.fmlVersion', project.fancy_mod_loader_version
+        arguments.addAll '--fml.mcVersion', project.minecraft_version
+        arguments.addAll '--fml.neoFormVersion', project.neoform_version
+    }
+}
+
+runs {
+    client { }
+    server { }
+    gameTestServer { }
+    gameTestClient { }
+    data {
+        arguments.addAll '--mod', 'neoforge'
+
+        modSources.add project.sourceSets.main
+
+        idea {
+            primarySourceSet project.sourceSets.main
+        }
+    }
+}
+
+runs.configureEach { it ->
+    modSources.add project(":neoforge-coremods").sourceSets.main
+
+    final File gameDir = project.file("run/${it.name}") as File
+    gameDir.mkdirs();
+
+    it.workingDirectory.set gameDir
+    it.arguments.addAll '--gameDir', gameDir.absolutePath
 }
 
 launcherProfile {

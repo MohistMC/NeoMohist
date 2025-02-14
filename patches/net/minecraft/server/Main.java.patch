@@ -85,6 +85,22 @@
                      } catch (NbtException | ReportedNbtException | IOException ioexception) {
                          LOGGER.error("Failed to load world data from {}", levelstoragesource$leveldirectory.oldDataFile(), ioexception);
                          LOGGER.error(
+@@ -173,6 +_,15 @@
+ 
+             PackRepository packrepository = ServerPacksSource.createPackRepository(levelstoragesource$levelstorageaccess);
+ 
++            if (gametestEnabled) {
++                net.neoforged.neoforge.gametest.GameTestHooks.registerGametests();
++                net.minecraft.core.BlockPos spawnPos = optionset.valueOf(spawnPosOpt);
++                MinecraftServer.spin(thread -> net.minecraft.gametest.framework.GameTestServer.create(thread, levelstoragesource$levelstorageaccess, packrepository, net.minecraft.gametest.framework.GameTestRegistry.getAllTestFunctions(), spawnPos));
++                // If we're running a gametest server we don't need to load the resources normally (GameTestServer#create does it using a flat world)
++                // or create a shutdown thread as the gametest server will always exit itself
++                return;
++            }
++
+             WorldStem worldstem;
+             try {
+                 WorldLoader.InitConfig worldloader$initconfig = loadOrCreateConfig(dedicatedserversettings.getProperties(), dynamic1, flag, packrepository);
 @@ -214,6 +_,9 @@
                                              worlddimensions = dedicatedserverproperties.createDimensions(p_307161_.datapackWorldgen());
                                          }
@@ -131,12 +147,9 @@
                      }
  
                      return dedicatedserver1;
-@@ -272,7 +_,10 @@
-             Thread thread = new Thread("Server Shutdown Thread") {
+@@ -273,6 +_,7 @@
                  @Override
                  public void run() {
-+                    // FORGE: Halting as GameTestServer will cause issues as it always calls System#exit on both crash and normal exit, so skip it
-+                    if (!(dedicatedserver instanceof net.minecraft.gametest.framework.GameTestServer))
                      dedicatedserver.halt(true);
 +                    org.apache.logging.log4j.LogManager.shutdown(); // we're manually managing the logging shutdown on the server. Make sure we do it here at the end.
                  }

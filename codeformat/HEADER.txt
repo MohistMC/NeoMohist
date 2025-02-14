@@ -1,1 +1,2 @@
 Copyright (c) CraftBukkit/NeoForged and contributors
+SPDX-License-Identifier: LGPL-2.1-only
